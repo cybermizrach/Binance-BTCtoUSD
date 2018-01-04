@@ -8,23 +8,16 @@ var getJSON = function(url, callback) {
     xhr.send();
 };
 
-var observer = new MutationObserver(function(mutations) {
-    if( BTCtoUSD != 0 ) {
-        mutations.forEach(function(mutation) {
-            // console.log('mutation.type = ' + mutation.type);
-            for (var i = 0; i < mutation.addedNodes.length; i++) {
-                if( (mutation.addedNodes[i].cells != null) && (mutation.addedNodes[i].cells.length > 7) ) {
-                    var curr = mutation.addedNodes[i].cells[7].innerText;
-                    if( (curr.indexOf('$') == -1) && (curr>0) ) {
-                        var next = (curr * BTCtoUSD).toLocaleString('en-US', {style:'currency',currency:'USD'});
-                        mutation.addedNodes[i].cells[7].innerHTML = curr + "<br/><small>" + next + "</small>";
-                        // console.log( curr + " => " + next );
-                    }
-                }
-            }
-        });
+var interval = setInterval(function(){
+    if(BTCtoUSD != 0){
+        $('.accountInfo-lists li.td .equalValue').each(function(element){
+            btcValue = parseFloat($(this).text());
+            usdValue = btcValue * BTCtoUSD;
+            $(this).html(btcValue + " BTC <br /> ~" + usdValue.toFixed(2) + " USD");
+            clearInterval(interval);
+        })
     }
-});
+}, 100)
 
 var BTCtoUSD = 0;
 function getUSDvalue() {
@@ -41,5 +34,7 @@ function getUSDvalue() {
 }
 
 getUSDvalue();
-observer.observe(document.getElementById('balanceTable'), { childList: true, subtree: true, characterData: true });
+
+
+// observer.observe(document.getElementsByClassName('accountInfo-lists')[0], { childList: true, subtree: true, characterData: true });
 

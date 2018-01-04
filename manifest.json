@@ -1,14 +1,15 @@
 {
 "manifest_version": 2,
-    "name": "Bittrex show USD",
-    "description": "Add the USD value to the output of the BTC Value column on Bittrex",
+    "name": "Binance show USD",
+    "description": "Add the USD value to the output of the BTC Value column on Binance",
     "version": "1.0",
     "content_scripts": [
         {
             "matches": [
-                "https://bittrex.com/Balance"
+                "https://www.binance.com/userCenter/depositWithdraw.html"
             ],
             "js": [
+                "jquery.min.js",
                 "content.js"
             ],
             "run_at": "document_end"
